@@ -4,10 +4,9 @@ A controller to operate VM resource in the Private Cloud(VM API) through Kuberne
 > This repo contains an API server provides REST operations for managing VM. It implements the precondition for testing the sample-controller.
 
 ## Building from Source
-Move repo into your go path under `$GOPATH/src`:
-```sh
-$ mkdir -p $GOPATH/src/k8s.io
-$ mv sample-controller $GOPATH/src/github.com/kairen/vm-controller
+Clone repo into your go path under `$GOPATH/src`:
+```sh 
+$ git clone https://github.com/kairen/vm-controller.git $GOPATH/src/github.com/kairen/vm-controller
 $ cd $GOPATH/src/github.com/kairen/vm-controller
 $ make dep
 $ make
