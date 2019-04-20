@@ -8,28 +8,23 @@ GOARCH ?= $(shell go env GOARCH)
 
 ORG := github.com
 OWNER := kairen
-REPOPATH ?= $(ORG)/$(OWNER)/controller
+REPOPATH ?= $(ORG)/$(OWNER)/vm-controller
 
 $(shell mkdir -p ./out)
-
-.PHONY: dep 
-dep:
-	dep ensure -v
 
 .PHONY: build
 build: out/controller out/apiserver
 
-.PHONY: out/controller
-out/controller:
-	CGO_ENABLED=0 GOOS=$* GOARCH=$(GOARCH) go build \
+out/%:
+	CGO_ENABLED=0 GOOS=$(GOOS) GOARCH=$(GOARCH) go build \
 	  -ldflags="-s -w -X $(REPOPATH)/pkg/version.version=$(VERSION)" \
-	  -a -o $@ cmd/controller/main.go
+	  -a -o $@ cmd/$(subst out/,,$@)/main.go
 
-.PHONY: out/apiserver
-out/apiserver:
-	CGO_ENABLED=0 GOOS=$* GOARCH=$(GOARCH) go build \
-	  -ldflags="-s -w -X $(REPOPATH)/pkg/version.version=$(VERSION)" \
-	  -a -o $@ cmd/apiserver/main.go
+# .PHONY: out/apiserver
+# out/apiserver:
+# 	CGO_ENABLED=0 GOOS=$* GOARCH=$(GOARCH) go build \
+# 	  -ldflags="-s -w -X $(REPOPATH)/pkg/version.version=$(VERSION)" \
+# 	  -a -o $@ cmd/apiserver/main.go
 
 .PHONY: build_images
 build_images: ctrl_image apiserver_image
@@ -46,6 +41,10 @@ ctrl_image:
 .PHONY: apiserver_image
 apiserver_image:
 	docker build --file Dockerfile.apiserver -t kairen/vm-apiserver:$(VERSION) .
+
+.PHONY: dep 
+dep:
+	dep ensure -v
 
 .PHONY: clean
 clean:
