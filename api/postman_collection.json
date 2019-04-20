@@ -1,0 +1,249 @@
+{
+	"info": {
+		"_postman_id": "b6bd344a-63ea-4d2d-a4e8-dd54aa891fde",
+		"name": "VM",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create server",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f2ac5283-8864-46b6-bac7-1a84aad500a3",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"test-1\",\n  \"cpu\": 1,\n  \"memory\": 2048,\n  \"diskSize\": 10\n}"
+				},
+				"url": {
+					"raw": "http://{{api_server_host}}:{{api_server_port}}/api/v1alpha1/servers",
+					"protocol": "http",
+					"host": [
+						"{{api_server_host}}"
+					],
+					"port": "{{api_server_port}}",
+					"path": [
+						"api",
+						"v1alpha1",
+						"servers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List server",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "78ccdcc4-f0a8-498c-b706-2df466297212",
+						"exec": [
+							"var root = JSON.parse(responseBody);",
+							"if (root.length > 0) {",
+							"    pm.environment.set(\"vm_uuid\", root[0].uuid)",
+							"} ",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{api_server_host}}:{{api_server_port}}/api/v1alpha1/servers",
+					"protocol": "http",
+					"host": [
+						"{{api_server_host}}"
+					],
+					"port": "{{api_server_port}}",
+					"path": [
+						"api",
+						"v1alpha1",
+						"servers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get server by uuid",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{api_server_host}}:{{api_server_port}}/api/v1alpha1/servers/{{vm_uuid}}",
+					"protocol": "http",
+					"host": [
+						"{{api_server_host}}"
+					],
+					"port": "{{api_server_port}}",
+					"path": [
+						"api",
+						"v1alpha1",
+						"servers",
+						"{{vm_uuid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get status by uuid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c1fb84a7-a615-41fe-bcca-0c9589ed0998",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"uuid\": \"u00016\"\n}"
+				},
+				"url": {
+					"raw": "http://{{api_server_host}}:{{api_server_port}}/api/v1alpha1/servers/{{vm_uuid}}/status",
+					"protocol": "http",
+					"host": [
+						"{{api_server_host}}"
+					],
+					"port": "{{api_server_port}}",
+					"path": [
+						"api",
+						"v1alpha1",
+						"servers",
+						"{{vm_uuid}}",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete server",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c1fb84a7-a615-41fe-bcca-0c9589ed0998",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"uuid\": \"u00016\"\n}"
+				},
+				"url": {
+					"raw": "http://{{api_server_host}}:{{api_server_port}}/api/v1alpha1/servers/{{vm_uuid}}",
+					"protocol": "http",
+					"host": [
+						"{{api_server_host}}"
+					],
+					"port": "{{api_server_port}}",
+					"path": [
+						"api",
+						"v1alpha1",
+						"servers",
+						"{{vm_uuid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check vm name",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{api_server_host}}:{{api_server_port}}/api/v1alpha1/check/{{name}}",
+					"protocol": "http",
+					"host": [
+						"{{api_server_host}}"
+					],
+					"port": "{{api_server_port}}",
+					"path": [
+						"api",
+						"v1alpha1",
+						"check",
+						"{{name}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

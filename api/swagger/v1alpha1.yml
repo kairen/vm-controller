@@ -1,0 +1,174 @@
+swagger: "2.0"
+info:
+  title: VM API
+  description: CRUD a VM
+  version: 0.1.0
+  contact:
+    email: k2r2.bai@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+tags:
+- name: Server
+  description: Server CRUD API
+schemes:
+- http
+paths:
+  "/api/v1alpha1/servers":
+    post:
+      tags:
+      - Server
+      summary: 'Create a server'
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          "$ref": "#/definitions/server"
+      responses:
+        '200':
+          description: 'succeeded in creating VM.'
+          schema:
+            "$ref": "#/definitions/server_get"
+        '409':
+          description: 'failed to create VM because of VM name duplication.'
+        '500':
+          description: 'failed to create VM: error.'
+    get:
+      tags:
+      - Server
+      summary: 'List all servers'
+      responses:
+        '200':
+          description: 'succeeded in returning vm list'
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/server_get"
+        '500':
+          description: 'failed to return vm list: error'
+  "/api/v1alpha1/servers/{uuid}":
+    get:
+      tags:
+      - Server
+      summary: 'Get server by ID'
+      parameters:
+      - in: path
+        name: uuid
+        type: string
+        required: true
+        description: 'Server uuid'
+      responses:
+        '200':
+          description: 'succeeded in returning vm.'
+          schema:
+            "$ref": "#/definitions/server_get"
+        '404':
+          description: 'server not found.'
+        '500':
+          description: 'failed to return vm: error'
+    delete:
+      tags:
+      - Server
+      summary: 'Delete server by ID'
+      parameters:
+        - in: path
+          name: uuid
+          type: string
+          required: true
+          description: 'Server uuid'
+      responses:
+        '200':
+          description: 'succeeded in deleting'
+        '500':
+          description: 'failed to delete: error.'
+  "/api/v1alpha1/servers/{uuid}/status":
+    get:
+      tags:
+      - Server
+      summary: 'Get server status by ID'
+      parameters:
+        - in: path
+          name: uuid
+          type: string
+          required: true
+          description: 'Server uuid'
+      responses:
+        '200':
+          description: 'succeeded in getting status'
+          schema:
+            "$ref": "#/definitions/server_status"
+        '404':
+          description: 'server not found.'
+        '500':
+          description: 'failed to get status: error'
+  "/api/v1alpha1/check/{name}":
+    get:
+      tags:
+      - Server
+      summary: 'VM Name Availability Check API'
+      parameters:
+        - in: path
+          name: name
+          type: string
+          required: true
+          description: 'VM name'
+      responses:
+        '200':
+          description: 'ok'
+        '404':
+          description: 'prohibit to use.'
+        '500':
+          description: 'failed: error'
+# Model Definitions
+definitions:
+  server:
+    type: object
+    required:
+    - name
+    - cpu
+    - memory
+    - diskSize
+    properties:
+      id:
+        type: string
+        example: 1
+        description: Auto genearate by server
+      uuid:
+        type: string
+        example: dc329f87d4de47198cfd2e21c6105b01
+        description: Auto genearate by server
+      name:
+        type: string
+        example: 'test-1'
+      cpu:
+        type: integer
+        example: 1
+      memory:
+        type: integer
+        example: 2048
+        description: 'MB'
+      diskSize:
+        type: integer
+        example: 10
+        description: 'GiB'
+  server_get:
+    type: object
+    properties:
+      uuid:
+        type: string
+        example: dc329f87d4de47198cfd2e21c6105b01
+        description: Auto genearate by server
+      name:
+        type: string
+        example: 'Test-1'
+  server_status:
+    type: object
+    properties:
+      cpuUtilization:
+        type: integer
+        example: 20 # < 0-100
+      state:
+        type: string
+        example: Running
+        description: "Running, Stop and Pause"

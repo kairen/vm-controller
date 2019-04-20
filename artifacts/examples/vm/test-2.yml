@@ -1,0 +1,9 @@
+apiVersion: samplecontroller.k8s.io/v1alpha1
+kind: VM
+metadata:
+  name: test-2
+spec:
+  vmName: vm-2
+  cpu: 2
+  memory: 2048 # MB
+  diskSize: 15 # GiB

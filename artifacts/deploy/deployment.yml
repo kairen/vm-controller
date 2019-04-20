@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vm-controller
+  namespace: kube-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: vm-controller
+  template:
+    metadata:
+      labels:
+        k8s-app: vm-controller
+    spec:
+      priorityClassName: system-cluster-critical
+      tolerations:
+      - key: CriticalAddonsOnly
+        operator: Exists
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/master
+      serviceAccountName: vm-controller
+      containers:
+      - name: vm-controller
+        image: kairen/vm-controller:v0.1.0
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        args:
+        - --logtostderr
+        - --v=2
+        - --api-url=http://127.0.0.1:8080 # Modify to your API URL.
