@@ -20,12 +20,6 @@ out/%:
 	  -ldflags="-s -w -X $(REPOPATH)/pkg/version.version=$(VERSION)" \
 	  -a -o $@ cmd/$(subst out/,,$@)/main.go
 
-# .PHONY: out/apiserver
-# out/apiserver:
-# 	CGO_ENABLED=0 GOOS=$* GOARCH=$(GOARCH) go build \
-# 	  -ldflags="-s -w -X $(REPOPATH)/pkg/version.version=$(VERSION)" \
-# 	  -a -o $@ cmd/apiserver/main.go
-
 .PHONY: build_images
 build_images: ctrl_image apiserver_image
 
