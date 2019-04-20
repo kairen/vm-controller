@@ -1,4 +1,4 @@
-# Sample Controller
+# VM Controller
 A controller to operate VM resource in the Private Cloud(VM API) through Kubernetes. This controller is extened from [sample-controller](https://github.com/kubernetes/sample-controller).
 
 > This repo contains an API server provides REST operations for managing VM. It implements the precondition for testing the sample-controller.
